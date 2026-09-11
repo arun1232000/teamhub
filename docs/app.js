@@ -159,7 +159,7 @@
     const open = state.tickets.filter((t) => t.status !== 'Closed').length;
     const awayText = away === 0
       ? 'Everyone is in today'
-      : `<strong>${away}</strong> ${away === 1 ? 'person is' : 'people are'} away today`;
+      : `<strong>${away}</strong> ${away === 1 ? 'person is' : 'people are'} on leave today`;
     $('#hero-context').innerHTML = `${awayText} · <strong>${open}</strong> open ${open === 1 ? 'ticket' : 'tickets'}`;
   }
 
@@ -315,7 +315,7 @@
     const tiles = [
       { label: 'Open tickets', value: openTickets.length, tone: openTickets.length ? 'destructive' : 'success', sub: state.activeDept === 'all' ? 'across all departments' : deptName(state.activeDept) },
       { label: 'Attendance', value: `${rate}%`, tone: rate >= 85 ? 'success' : 'warning', sub: 'present this month' },
-      { label: 'Away today', value: awayToday, tone: awayToday ? 'warning' : '', sub: awayToday === 1 ? 'team member' : 'team members' },
+      { label: 'On leave today', value: awayToday, tone: awayToday ? 'warning' : '', sub: awayToday === 1 ? 'team member' : 'team members' },
       { label: 'Headcount', value: headcount, tone: '', sub: depts.length === 1 ? deptName(depts[0].id) : `${depts.length} departments` },
     ];
 
@@ -529,13 +529,13 @@
   function updateToggleLabel() {
     const mine = myLeave();
     const phase = mine ? leavePhase(mine) : 'none';
-    $('#leave-toggle-label').textContent = leaveToggle.checked ? "I'm away" : "I'm available";
+    $('#leave-toggle-label').textContent = leaveToggle.checked ? "I'm on leave" : "I'm available";
     $('#leave-my-status').textContent = !leaveToggle.checked
-      ? "Flip this on to let the team know you're away."
+      ? "Flip this on to let the team know you're on leave."
       : phase === 'upcoming'
         ? `Scheduled: ${describeRange(mine)}`
         : phase === 'current'
-          ? `The team can see you're away (${describeRange(mine)}).`
+          ? `The team can see you're on leave (${describeRange(mine)}).`
           : 'Set your dates below, then save.';
   }
 
@@ -548,7 +548,7 @@
     const err = $('#leave-error');
 
     if (onLeave && from && to && to < from) {
-      err.textContent = 'The last day away cannot be before the first day.';
+      err.textContent = 'The last day on leave cannot be before the first day.';
       err.hidden = false;
       return;
     }
@@ -591,7 +591,7 @@
       .sort((a, b) => (a.from || '').localeCompare(b.from || ''));
 
     $('#today-label').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
-    renderLeaveList($('#leave-board-current'), current, 'warning', 'Away', 'Everyone is available today.');
+    renderLeaveList($('#leave-board-current'), current, 'warning', 'On leave', 'Everyone is available today.');
     renderLeaveList($('#leave-board-upcoming'), upcoming, 'primary', 'Upcoming', 'No leave booked ahead.');
 
     const badge = $('#leave-count');
