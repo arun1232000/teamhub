@@ -88,6 +88,18 @@ if (!appJs.includes(originalSaveLeave)) {
   throw new Error('build-demo: saveLeave() shape changed in public/app.js — update the patch in scripts/build-demo.js');
 }
 appJs = appJs.replace(originalSaveLeave, demoSaveLeave);
+
+// GitHub Pages project sites are served from a subpath (e.g.
+// /<repo>/), so absolute paths like '/api/leave' resolve to the site
+// root instead of the subpath the page actually lives under. Rewrite
+// to relative paths, which resolve against the current directory
+// regardless of subpath depth.
+const beforeApiRewrite = appJs;
+appJs = appJs.replace(/'\/api\//g, "'api/");
+if (appJs === beforeApiRewrite) {
+  throw new Error("build-demo: no '/api/' references found to rewrite — check the patch still applies");
+}
+
 fs.writeFileSync(appJsPath, appJs);
 
 console.log(`Built demo site in ${path.relative(ROOT, OUT_DIR)}/`);

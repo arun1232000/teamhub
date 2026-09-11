@@ -647,7 +647,7 @@
 
   async function pollLeave() {
     try {
-      state.leave = await api('/api/leave');
+      state.leave = await api('api/leave');
       renderLeaveBoards();
       syncOwnLeaveUi();
       renderHero();
@@ -660,7 +660,7 @@
   async function refreshDashboardData() {
     try {
       const [attendance, tickets, reports] = await Promise.all([
-        api('/api/attendance'), api('/api/tickets'), api('/api/reports'),
+        api('api/attendance'), api('api/tickets'), api('api/reports'),
       ]);
       Object.assign(state, { attendance, tickets, reports });
       renderDashboard();
@@ -677,8 +677,8 @@
 
     try {
       const [meta, departments, onboarding, sops, attendance, tickets, reports, leave] = await Promise.all([
-        api('/api/meta'), api('/api/departments'), api('/api/onboarding'), api('/api/sops'),
-        api('/api/attendance'), api('/api/tickets'), api('/api/reports'), api('/api/leave'),
+        api('api/meta'), api('api/departments'), api('api/onboarding'), api('api/sops'),
+        api('api/attendance'), api('api/tickets'), api('api/reports'), api('api/leave'),
       ]);
       Object.assign(state, { departments, onboarding, sops, attendance, tickets, reports, leave });
       $('#mock-badge').hidden = meta.usingMonday;
