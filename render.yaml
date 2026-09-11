@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: teamhub
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONDAY_API_TOKEN
+        sync: false
+      - key: MONDAY_ATTENDANCE_BOARD_ID
+        sync: false
+      - key: MONDAY_TICKETS_BOARD_ID
+        sync: false
+      - key: MONDAY_REPORTS_BOARD_ID
+        sync: false
