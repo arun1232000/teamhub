@@ -1,0 +1,7 @@
+[
+  { "id": "eng", "name": "Engineering" },
+  { "id": "support", "name": "Support" },
+  { "id": "sales", "name": "Sales" },
+  { "id": "design", "name": "Design" },
+  { "id": "ops", "name": "Operations" }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "ob-1",
+    "title": "Welcome & Team Overview",
+    "description": "Read the team charter and org chart so you know who does what.",
+    "link": "https://example-drive.local/welcome-pack",
+    "category": "Getting Started"
+  },
+  {
+    "id": "ob-2",
+    "title": "Set up your accounts",
+    "description": "Get access to email, monday.com, Slack/Teams, and the shared drive.",
+    "link": "https://example-drive.local/account-setup",
+    "category": "Getting Started"
+  },
+  {
+    "id": "ob-3",
+    "title": "Company policies",
+    "description": "Leave policy, working hours, and code of conduct.",
+    "link": "https://example-drive.local/policies",
+    "category": "Policies"
+  },
+  {
+    "id": "ob-4",
+    "title": "Department-specific onboarding",
+    "description": "Check with your manager for role-specific onboarding tasks and tools.",
+    "link": "https://example-drive.local/dept-onboarding",
+    "category": "Role-Specific"
+  },
+  {
+    "id": "ob-5",
+    "title": "Book your 1:1 with your manager",
+    "description": "Schedule an intro call within your first week.",
+    "link": "https://example-drive.local/calendar",
+    "category": "Getting Started"
+  }
+]

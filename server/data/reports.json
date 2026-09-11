@@ -1,0 +1,7 @@
+[
+  { "id": "rep-1", "department": "eng", "title": "August Engineering Summary", "period": "2026-08", "link": "https://example-drive.local/reports/eng-aug" },
+  { "id": "rep-2", "department": "support", "title": "August Support Ticket Trends", "period": "2026-08", "link": "https://example-drive.local/reports/support-aug" },
+  { "id": "rep-3", "department": "sales", "title": "August Sales Pipeline Report", "period": "2026-08", "link": "https://example-drive.local/reports/sales-aug" },
+  { "id": "rep-4", "department": "design", "title": "August Design Output Report", "period": "2026-08", "link": "https://example-drive.local/reports/design-aug" },
+  { "id": "rep-5", "department": "ops", "title": "August Operations Report", "period": "2026-08", "link": "https://example-drive.local/reports/ops-aug" }
+]

@@ -1,0 +1,405 @@
+/* ==========================================================================
+   TeamHub — Design Tokens  ·  "Bold & Friendly"
+   --------------------------------------------------------------------------
+   The single source of truth for colour, type, space, radius, elevation and
+   motion. This file is the equivalent of a tailwind.config.js theme block.
+
+   Two layers, and the distinction matters:
+
+     1. PRIMITIVES  --stone-500, --violet-600 …
+        Raw palette values. Never reference these directly in component or
+        layout CSS — they carry no meaning and don't flip in dark mode.
+
+     2. SEMANTIC    --bg-surface, --text-muted, --border-strong …
+        What a colour is *for*. Components use only these. Dark mode is
+        implemented by repointing semantic tokens at different primitives,
+        so component CSS never needs a dark-mode branch of its own.
+
+   Rule of thumb: if you're writing a hex code outside this file, stop.
+
+   Character: a vivid violet accent on warm stone neutrals, a large type
+   scale, generous radii and soft diffuse shadows. Confident and welcoming
+   rather than clinical.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     PRIMITIVES — palette
+     --------------------------------------------------------------------- */
+
+  /* Warm neutral ramp — "stone". The warmth is what keeps a saturated
+     accent from reading cold or corporate. */
+  --stone-0:   #ffffff;
+  --stone-50:  #faf9f7;
+  --stone-100: #f4f2ef;
+  --stone-200: #e8e5e0;
+  --stone-300: #d6d2cb;
+  --stone-400: #a8a29a;
+  --stone-500: #78716a;
+  --stone-600: #57534d;
+  --stone-700: #44403a;
+  --stone-800: #292524;
+  --stone-900: #1c1917;
+  --stone-950: #0f0e0d;
+
+  /* Primary — vivid violet. The signature of this theme. */
+  --violet-50:  #f5f3ff;
+  --violet-100: #ede9fe;
+  --violet-200: #ddd6fe;
+  --violet-300: #c4b5fd;
+  --violet-400: #a78bfa;
+  --violet-500: #8b5cf6;
+  --violet-600: #7c3aed;
+  --violet-700: #6d28d9;
+  --violet-800: #5b21b6;
+
+  /* Status — meaning-bearing only, never decoration. */
+  --green-50:  #f0fdf4;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  --green-700: #15803d;
+  --green-800: #14532d;
+
+  --amber-50:  #fffbeb;
+  --amber-400: #fbbf24;
+  --amber-500: #f59e0b;
+  --amber-600: #b45309;
+  --amber-700: #92400e;
+
+  --red-50:  #fef2f2;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --red-800: #991b1b;
+
+  /* ---------------------------------------------------------------------
+     SEMANTIC — light theme
+     --------------------------------------------------------------------- */
+
+  --bg-page:            var(--stone-50);
+  --bg-surface:         var(--stone-0);
+  --bg-surface-raised:  var(--stone-0);
+  --bg-sunken:          var(--stone-100);
+  --bg-hover:           rgba(28, 25, 23, 0.04);
+  --bg-active:          rgba(28, 25, 23, 0.07);
+  --bg-selected:        var(--violet-50);
+  --bg-overlay:         rgba(28, 25, 23, 0.5);
+
+  --text-strong:   var(--stone-900);   /* 17.49:1 on surface */
+  --text-default:  var(--stone-800);   /* 15.17:1 */
+  --text-muted:    var(--stone-600);   /*  7.64:1 */
+  --text-subtle:   var(--stone-500);   /*  4.81:1 */
+  --text-on-solid: var(--stone-0);
+
+  --border-subtle:  var(--stone-200);
+  --border-default: var(--stone-300);
+  --border-strong:  var(--stone-400);
+
+  /* Primary action */
+  --primary:            var(--violet-600);
+  --primary-hover:      var(--violet-700);
+  --primary-active:     var(--violet-800);
+  --primary-subtle:     var(--violet-50);
+  --primary-subtle-text: var(--violet-700);
+  --primary-border:     var(--violet-200);
+  --primary-ring:       rgba(124, 58, 237, 0.35);
+
+  /* Solid fills (buttons, brand marks). Separate from --primary because the
+     dark-mode accent is lightened for text legibility, which would leave a
+     white button label below 4.5:1. */
+  --primary-solid:       var(--violet-600);  /* white label 5.70:1 */
+  --primary-solid-hover: var(--violet-700);  /* white label 7.10:1 */
+  --primary-solid-text:  var(--stone-0);
+
+  /* Secondary — deliberately neutral, not a second hue. A competing colour
+     dilutes the accent; a quiet neutral reads as clearly secondary. */
+  --secondary:        var(--stone-100);
+  --secondary-hover:  var(--stone-200);
+  --secondary-active: var(--stone-300);
+  --secondary-text:   var(--stone-800);
+
+  --destructive:            var(--red-600);
+  --destructive-hover:      var(--red-700);
+  --destructive-subtle:     var(--red-50);
+  --destructive-subtle-text: var(--red-700);
+  --destructive-border:     #fecaca;
+  --destructive-ring:       rgba(220, 38, 38, 0.35);
+
+  --success:             var(--green-600);
+  --success-subtle:      var(--green-50);
+  --success-subtle-text: var(--green-700);
+
+  --warning:             var(--amber-600);
+  --warning-subtle:      var(--amber-50);
+  --warning-subtle-text: var(--amber-700);
+  /* --warning is tuned for text contrast, which makes it too brown for a
+     large fill. Solid amber surfaces (switch track, count badge) use this. */
+  --warning-solid:       var(--amber-400);
+  --warning-solid-text:  var(--stone-950);
+
+  /* Data-visualisation marks — tuned as fills on a chart surface, not text */
+  --viz-present: var(--green-500);
+  --viz-leave:   var(--amber-500);
+  --viz-absent:  var(--red-500);
+  --viz-primary: var(--violet-600);
+  --viz-track:   var(--stone-200);
+
+  /* Inverse surface (toasts) and the switch knob — semantic aliases so
+     components never reach for a primitive. */
+  --bg-inverse:   var(--stone-900);
+  --text-inverse: var(--stone-50);
+  --control-knob: var(--stone-0);
+
+  /* Stat-card tints. Each pairs a soft wash with ink that clears 4.5:1
+     against that wash — the colour is what makes the dashboard feel alive. */
+  --tile-1-bg: var(--violet-50);  --tile-1-ink: var(--violet-700);
+  --tile-2-bg: var(--green-50);   --tile-2-ink: var(--green-700);
+  --tile-3-bg: var(--amber-50);   --tile-3-ink: var(--amber-600);
+  --tile-4-bg: var(--stone-100);  --tile-4-ink: var(--stone-800);
+
+  /* ---------------------------------------------------------------------
+     TYPOGRAPHY — larger and more confident than a typical admin tool
+     Inter when available locally, otherwise a close system stack. To
+     guarantee Inter offline, self-host it — see DESIGN_SYSTEM.md §5.
+     --------------------------------------------------------------------- */
+  --font-sans: "Inter", "Inter var", ui-sans-serif, system-ui, -apple-system,
+               "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+               "Liberation Mono", monospace;
+
+  --text-2xs: 0.75rem;     /* 12px — uppercase micro-labels */
+  --text-xs:  0.8125rem;   /* 13px — meta, captions */
+  --text-sm:  0.875rem;    /* 14px — secondary body, table cells */
+  --text-md:  0.9375rem;   /* 15px — default body */
+  --text-lg:  1.0625rem;   /* 17px — emphasised body */
+  --text-xl:  1.25rem;     /* 20px — card / section titles */
+  --text-2xl: 1.625rem;    /* 26px — view titles */
+  --text-3xl: 2rem;        /* 32px — greeting */
+  --text-4xl: 2.5rem;      /* 40px — stat figures */
+
+  --leading-tight:  1.2;
+  --leading-snug:   1.4;
+  --leading-normal: 1.6;
+
+  --weight-normal:   400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-extrabold: 800;
+
+  --tracking-tight: -0.02em;   /* large text tightens optically */
+  --tracking-wide:  0.06em;    /* uppercase micro-labels need air */
+
+  /* ---------------------------------------------------------------------
+     SPACE — 4px rhythm, used generously in this theme
+     --------------------------------------------------------------------- */
+  --space-0:  0;
+  --space-1:  0.25rem;  /*  4px */
+  --space-2:  0.5rem;   /*  8px */
+  --space-3:  0.75rem;  /* 12px */
+  --space-4:  1rem;     /* 16px */
+  --space-5:  1.25rem;  /* 20px */
+  --space-6:  1.5rem;   /* 24px */
+  --space-8:  2rem;     /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* ---------------------------------------------------------------------
+     RADIUS — soft and rounded; a core part of the friendly character
+     --------------------------------------------------------------------- */
+  --radius-xs:   6px;
+  --radius-sm:   8px;
+  --radius-md:   10px;  /* default: buttons, inputs */
+  --radius-lg:   14px;
+  --radius-xl:   20px;  /* cards, dialogs */
+  --radius-2xl:  26px;
+  --radius-full: 9999px;
+
+  /* ---------------------------------------------------------------------
+     ELEVATION — soft, diffuse and warm-tinted rather than hard grey
+     --------------------------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(28, 25, 23, 0.05);
+  --shadow-sm: 0 2px 6px rgba(28, 25, 23, 0.06), 0 1px 2px rgba(28, 25, 23, 0.04);
+  --shadow-md: 0 8px 24px rgba(28, 25, 23, 0.08);
+  --shadow-lg: 0 20px 48px rgba(28, 25, 23, 0.14);
+  --shadow-primary: 0 6px 20px rgba(124, 58, 237, 0.28);
+  --shadow-focus: 0 0 0 4px var(--primary-ring);
+
+  /* ---------------------------------------------------------------------
+     MOTION
+     --------------------------------------------------------------------- */
+  --duration-fast: 130ms;
+  --duration-base: 220ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---------------------------------------------------------------------
+     LAYERING
+     --------------------------------------------------------------------- */
+  --z-base:     1;
+  --z-sticky:   20;
+  --z-dropdown: 40;
+  --z-overlay:  100;
+  --z-toast:    300;
+
+  /* Layout */
+  --container-max: 1120px;
+  --topbar-height: 60px;
+
+  color-scheme: light;
+}
+
+/* ==========================================================================
+   DARK THEME
+   Only semantic tokens are repointed. Declared under both the OS media query
+   and the explicit [data-theme] stamp so the in-app toggle wins in either
+   direction; the :not() guard lets an explicit "light" choice beat OS dark.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+
+    --bg-page:           #131211;
+    --bg-surface:        #1c1a18;
+    --bg-surface-raised: #211f1c;
+    --bg-sunken:         #171614;
+    --bg-hover:          rgba(250, 249, 247, 0.06);
+    --bg-active:         rgba(250, 249, 247, 0.1);
+    --bg-selected:       rgba(139, 92, 246, 0.18);
+    --bg-overlay:        rgba(15, 14, 13, 0.72);
+
+    --text-strong:  #faf9f7;
+    --text-default: #ebe8e3;
+    --text-muted:   #a8a29a;
+    --text-subtle:  #938c83;   /* 4.95:1 on surface */
+
+    --border-subtle:  #2e2b27;
+    --border-default: #3d3934;
+    --border-strong:  #55504a;
+
+    --primary:             var(--violet-400);
+    --primary-hover:       var(--violet-300);
+    --primary-active:      var(--violet-200);
+    --primary-subtle:      rgba(139, 92, 246, 0.18);
+    --primary-subtle-text: var(--violet-300);
+    --primary-border:      rgba(139, 92, 246, 0.4);
+    --primary-ring:        rgba(167, 139, 250, 0.45);
+
+    --primary-solid:       #7c4ceb;  /* white label 5.13:1 */
+    --primary-solid-hover: #8355ee;  /* white label 4.67:1 */
+    --primary-solid-text:  var(--stone-0);
+
+    --secondary:        #2b2825;
+    --secondary-hover:  #35312d;
+    --secondary-active: #403b36;
+    --secondary-text:   #ebe8e3;
+
+    --destructive:             #f0595b;
+    --destructive-hover:       #f47a7c;
+    --destructive-subtle:      rgba(240, 89, 91, 0.16);
+    --destructive-subtle-text: #ffa8aa;
+    --destructive-border:      rgba(240, 89, 91, 0.4);
+    --destructive-ring:        rgba(240, 89, 91, 0.45);
+
+    --success:             #3ecf7e;
+    --success-subtle:      rgba(62, 207, 126, 0.16);
+    --success-subtle-text: #7ee2a8;
+
+    --warning:             #fbbf24;
+    --warning-subtle:      rgba(251, 191, 36, 0.16);
+    --warning-subtle-text: #fcd77e;
+    --warning-solid:       #fbbf24;
+    --warning-solid-text:  var(--stone-950);
+
+    --viz-track: #2e2b27;
+
+    --bg-inverse:   #2b2825;
+    --text-inverse: #faf9f7;
+    --control-knob: #faf9f7;
+
+    --tile-1-bg: rgba(139, 92, 246, 0.16); --tile-1-ink: #c4b5fd;
+    --tile-2-bg: rgba(62, 207, 126, 0.15); --tile-2-ink: #7ee2a8;
+    --tile-3-bg: rgba(251, 191, 36, 0.15); --tile-3-ink: #fcd77e;
+    --tile-4-bg: #2b2825;                  --tile-4-ink: #ebe8e3;
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.6);
+    --shadow-primary: 0 6px 20px rgba(124, 76, 235, 0.4);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-page:           #131211;
+  --bg-surface:        #1c1a18;
+  --bg-surface-raised: #211f1c;
+  --bg-sunken:         #171614;
+  --bg-hover:          rgba(250, 249, 247, 0.06);
+  --bg-active:         rgba(250, 249, 247, 0.1);
+  --bg-selected:       rgba(139, 92, 246, 0.18);
+  --bg-overlay:        rgba(15, 14, 13, 0.72);
+
+  --text-strong:  #faf9f7;
+  --text-default: #ebe8e3;
+  --text-muted:   #a8a29a;
+  --text-subtle:  #938c83;   /* 4.95:1 on surface */
+
+  --border-subtle:  #2e2b27;
+  --border-default: #3d3934;
+  --border-strong:  #55504a;
+
+  --primary:             var(--violet-400);
+  --primary-hover:       var(--violet-300);
+  --primary-active:      var(--violet-200);
+  --primary-subtle:      rgba(139, 92, 246, 0.18);
+  --primary-subtle-text: var(--violet-300);
+  --primary-border:      rgba(139, 92, 246, 0.4);
+  --primary-ring:        rgba(167, 139, 250, 0.45);
+
+  --primary-solid:       #7c4ceb;  /* white label 5.13:1 */
+  --primary-solid-hover: #8355ee;  /* white label 4.67:1 */
+  --primary-solid-text:  var(--stone-0);
+
+  --secondary:        #2b2825;
+  --secondary-hover:  #35312d;
+  --secondary-active: #403b36;
+  --secondary-text:   #ebe8e3;
+
+  --destructive:             #f0595b;
+  --destructive-hover:       #f47a7c;
+  --destructive-subtle:      rgba(240, 89, 91, 0.16);
+  --destructive-subtle-text: #ffa8aa;
+  --destructive-border:      rgba(240, 89, 91, 0.4);
+  --destructive-ring:        rgba(240, 89, 91, 0.45);
+
+  --success:             #3ecf7e;
+  --success-subtle:      rgba(62, 207, 126, 0.16);
+  --success-subtle-text: #7ee2a8;
+
+  --warning:             #fbbf24;
+  --warning-subtle:      rgba(251, 191, 36, 0.16);
+  --warning-subtle-text: #fcd77e;
+  --warning-solid:       #fbbf24;
+  --warning-solid-text:  var(--stone-950);
+
+  --viz-track: #2e2b27;
+
+  --bg-inverse:   #2b2825;
+  --text-inverse: #faf9f7;
+  --control-knob: #faf9f7;
+
+  --tile-1-bg: rgba(139, 92, 246, 0.16); --tile-1-ink: #c4b5fd;
+  --tile-2-bg: rgba(62, 207, 126, 0.15); --tile-2-ink: #7ee2a8;
+  --tile-3-bg: rgba(251, 191, 36, 0.15); --tile-3-ink: #fcd77e;
+  --tile-4-bg: #2b2825;                  --tile-4-ink: #ebe8e3;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.6);
+  --shadow-primary: 0 6px 20px rgba(124, 76, 235, 0.4);
+}
