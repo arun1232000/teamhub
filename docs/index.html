@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TeamHub</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='14' font-weight='700' fill='white' text-anchor='middle'%3ETH%3C/text%3E%3C/svg%3E" />
+  <!-- Load order matters: tokens → components → layout -->
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <div id="app">
+    <!-- Name gate: lightweight attribution, not authentication -->
+    <div id="gate" class="gate-wrap" hidden>
+      <div class="gate card card--elevated">
+        <div class="gate__mark">TH</div>
+        <h1>Welcome to TeamHub</h1>
+        <p class="gate__lede">Enter your name to continue. It's used to attribute your onboarding progress and leave status &mdash; it isn't a password.</p>
+        <div class="field gate__field" id="gate-field">
+          <label class="field__label" for="gate-input">Your name</label>
+          <input class="input" id="gate-input" type="text" placeholder="e.g. Priya Nair" autocomplete="name" />
+          <div class="field__error" id="gate-error" hidden>Please enter your name to continue.</div>
+        </div>
+        <button class="btn btn--primary btn--lg btn--block" id="gate-submit">Continue</button>
+      </div>
+    </div>
+
+    <div id="shell" hidden>
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand__mark">TH</div>
+          <span class="brand__name">TeamHub</span>
+          <span id="mock-badge" class="env-badge" hidden title="No monday.com board mapping configured — showing sample data">Sample data</span>
+        </div>
+
+        <nav class="tabs" id="tabs" role="tablist" aria-label="Sections">
+          <button class="tabs__item is-active" role="tab" data-view="onboarding" id="tab-onboarding" aria-controls="view-onboarding" aria-selected="true">Onboarding</button>
+          <button class="tabs__item" role="tab" data-view="dashboard" id="tab-dashboard" aria-controls="view-dashboard" aria-selected="false">Dashboard</button>
+          <button class="tabs__item" role="tab" data-view="sops" id="tab-sops" aria-controls="view-sops" aria-selected="false">SOPs</button>
+          <button class="tabs__item" role="tab" data-view="leave" id="tab-leave" aria-controls="view-leave" aria-selected="false">
+            Leave <span class="tabs__count" id="leave-count" hidden>0</span>
+          </button>
+        </nav>
+
+        <div class="session">
+          <button class="btn btn--ghost btn--icon btn--sm" id="theme-toggle" aria-label="Change colour theme">
+            <span id="theme-icon"></span>
+          </button>
+          <div class="session__user">
+            <span class="session__name u-truncate" id="who-pill">&mdash;</span>
+            <span class="avatar session__avatar" id="who-avatar"></span>
+          </div>
+          <button class="btn btn--outline btn--sm" id="switch-user">Switch</button>
+        </div>
+      </header>
+
+      <div id="error-banner" class="banner banner--destructive" hidden>
+        <span id="error-text">Couldn't reach the TeamHub server.</span>
+        <button class="btn btn--outline btn--sm" id="error-retry">Retry</button>
+      </div>
+
+      <main class="main" id="main">
+        <div id="loading" class="stack" aria-live="polite" aria-busy="true">
+          <div class="skeleton skeleton--title"></div>
+          <div class="skeleton skeleton--line"></div>
+          <div class="skeleton skeleton--block"></div>
+          <div class="skeleton skeleton--block"></div>
+          <div class="skeleton skeleton--block"></div>
+        </div>
+
+        <div id="views" hidden>
+          <div class="hero">
+            <div class="hero__greeting" id="hero-greeting">Hello</div>
+            <div class="hero__context" id="hero-context"></div>
+          </div>
+
+          <!-- ================= ONBOARDING ================= -->
+          <section class="view is-active" id="view-onboarding" role="tabpanel" aria-labelledby="tab-onboarding" tabindex="0">
+            <div class="view__head">
+              <div>
+                <h1 class="view__title">Onboarding</h1>
+                <p class="view__sub">Everything a new team member needs to do or read, in one checklist.</p>
+              </div>
+            </div>
+
+            <div class="card card--elevated progress-card">
+              <div class="progress-card__head">
+                <span class="progress-card__count" id="onboard-progress-label">0 of 0 complete</span>
+                <button class="btn btn--ghost btn--sm" id="onboard-reset">Reset progress</button>
+              </div>
+              <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="onboard-progressbar">
+                <div class="progress__fill" id="onboard-progress-fill" style="width:0%"></div>
+              </div>
+              <p class="progress-card__hint" id="onboard-hint">Tick items off as you go &mdash; progress is saved on this device.</p>
+            </div>
+
+            <div id="onboard-groups"></div>
+          </section>
+
+          <!-- ================= DASHBOARD ================= -->
+          <section class="view" id="view-dashboard" role="tabpanel" aria-labelledby="tab-dashboard" tabindex="0" hidden>
+            <div class="view__head">
+              <div>
+                <h1 class="view__title">Department Reporting</h1>
+                <p class="view__sub" id="dashboard-sub">Attendance, tickets, and reports.</p>
+              </div>
+              <button class="btn btn--outline btn--sm" id="refresh-dashboard">Refresh</button>
+            </div>
+
+            <div class="stat-grid" id="stat-row"></div>
+
+            <div class="segmented" id="dept-filter" role="group" aria-label="Filter by department"></div>
+
+            <div class="section-head">
+              <h2 class="u-eyebrow">Monthly attendance</h2>
+              <span class="section-head__meta" id="attendance-month"></span>
+            </div>
+            <div class="stack" id="attendance-blocks"></div>
+
+            <div class="section-head">
+              <h2 class="u-eyebrow">Open tickets by department</h2>
+            </div>
+            <div class="card card--elevated card--pad">
+              <div class="barlist" id="ticket-bars"></div>
+            </div>
+
+            <div class="section-head">
+              <h2 class="u-eyebrow">Tickets</h2>
+            </div>
+            <div class="toolbar">
+              <div class="input-group toolbar__search">
+                <span class="input-group__icon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>
+                </span>
+                <label class="u-visually-hidden" for="ticket-search">Search tickets</label>
+                <input class="input" type="search" id="ticket-search" placeholder="Search by ID, title, or assignee…" />
+              </div>
+              <div class="segmented" id="status-filter" role="group" aria-label="Filter by status">
+                <button class="segmented__item is-active" data-status="all">All</button>
+                <button class="segmented__item" data-status="Open">Open</button>
+                <button class="segmented__item" data-status="In Progress">In Progress</button>
+                <button class="segmented__item" data-status="Closed">Closed</button>
+              </div>
+            </div>
+            <div class="card card--elevated table-wrap">
+              <table class="table" id="ticket-table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Assignee</th>
+                  </tr>
+                </thead>
+                <tbody id="ticket-tbody"></tbody>
+              </table>
+              <div class="empty" id="ticket-empty" hidden>No tickets match your search.</div>
+            </div>
+
+            <div class="section-head">
+              <h2 class="u-eyebrow">Reports</h2>
+            </div>
+            <div class="card card--elevated">
+              <div class="list" id="report-list"></div>
+            </div>
+          </section>
+
+          <!-- ================= SOPS ================= -->
+          <section class="view" id="view-sops" role="tabpanel" aria-labelledby="tab-sops" tabindex="0" hidden>
+            <div class="view__head">
+              <div>
+                <h1 class="view__title">Standard Operating Procedures</h1>
+                <p class="view__sub">Reference guides for common tasks, grouped by area.</p>
+              </div>
+            </div>
+            <div class="toolbar">
+              <div class="input-group toolbar__search">
+                <span class="input-group__icon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>
+                </span>
+                <label class="u-visually-hidden" for="sop-search">Search SOPs</label>
+                <input class="input" type="search" id="sop-search" placeholder="Search procedures…" />
+              </div>
+            </div>
+            <div id="sop-groups"></div>
+            <div class="card empty" id="sop-empty" hidden>No procedures match your search.</div>
+          </section>
+
+          <!-- ================= LEAVE ================= -->
+          <section class="view" id="view-leave" role="tabpanel" aria-labelledby="tab-leave" tabindex="0" hidden>
+            <div class="view__head">
+              <div>
+                <h1 class="view__title">Leave Status</h1>
+                <p class="view__sub"><span class="live-dot" aria-hidden="true"></span> Live &mdash; everyone viewing this page sees updates within a few seconds.</p>
+              </div>
+            </div>
+
+            <div class="card card--elevated leave-form">
+              <div class="leave-form__toggle">
+                <label class="switch">
+                  <input type="checkbox" id="leave-toggle" aria-labelledby="leave-toggle-label" />
+                  <span class="switch__track" aria-hidden="true"></span>
+                </label>
+                <div>
+                  <div class="leave-form__state" id="leave-toggle-label">I'm available</div>
+                  <div class="leave-form__hint" id="leave-my-status">Flip this on to let the team know you're away.</div>
+                </div>
+              </div>
+
+              <div class="leave-form__fields" id="leave-detail-row" hidden>
+                <div class="field">
+                  <label class="field__label" for="leave-from">First day away</label>
+                  <input class="input" type="date" id="leave-from" />
+                </div>
+                <div class="field">
+                  <label class="field__label" for="leave-to">Last day away</label>
+                  <input class="input" type="date" id="leave-to" />
+                </div>
+                <div class="field field--note" id="leave-note-field">
+                  <label class="field__label" for="leave-note">Note <span class="optional">(optional)</span></label>
+                  <input class="input" type="text" id="leave-note" placeholder="e.g. Family function" maxlength="120" />
+                </div>
+                <button class="btn btn--primary" id="leave-save">Save status</button>
+              </div>
+              <div class="field__error" id="leave-error" hidden></div>
+            </div>
+
+            <div class="section-head">
+              <h2 class="u-eyebrow">Away today</h2>
+              <span class="section-head__meta" id="today-label"></span>
+            </div>
+            <div class="stack" id="leave-board-current"></div>
+
+            <div class="section-head">
+              <h2 class="u-eyebrow">Upcoming leave</h2>
+            </div>
+            <div class="stack" id="leave-board-upcoming"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast-host" id="toast-host" aria-live="polite"></div>
+
+  <div class="modal-backdrop" id="ticket-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tm-title">
+      <div class="modal__header">
+        <div>
+          <h2 class="modal__title" id="tm-title"></h2>
+          <div class="modal__sub" id="tm-id"></div>
+        </div>
+        <button class="btn btn--ghost btn--icon btn--sm" id="tm-close-x" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+        </button>
+      </div>
+      <div class="modal__body">
+        <dl class="detail-grid">
+          <dt>Status</dt><dd id="tm-status"></dd>
+          <dt>Priority</dt><dd id="tm-priority"></dd>
+          <dt>Department</dt><dd id="tm-dept"></dd>
+          <dt>Assignee</dt><dd id="tm-assignee"></dd>
+          <dt>Created</dt><dd id="tm-created"></dd>
+        </dl>
+        <div class="prose-block" id="tm-desc" style="margin-top:var(--space-4)"></div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--secondary" id="tm-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

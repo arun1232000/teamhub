@@ -1,0 +1,38 @@
+[
+  {
+    "id": "sop-1",
+    "title": "Handling a customer escalation",
+    "category": "Support",
+    "link": "https://example-drive.local/sops/escalation"
+  },
+  {
+    "id": "sop-2",
+    "title": "Deploying a hotfix",
+    "category": "Engineering",
+    "link": "https://example-drive.local/sops/hotfix"
+  },
+  {
+    "id": "sop-3",
+    "title": "Onboarding a new client",
+    "category": "Sales",
+    "link": "https://example-drive.local/sops/new-client"
+  },
+  {
+    "id": "sop-4",
+    "title": "Design review checklist",
+    "category": "Design",
+    "link": "https://example-drive.local/sops/design-review"
+  },
+  {
+    "id": "sop-5",
+    "title": "Requesting time off",
+    "category": "Operations",
+    "link": "https://example-drive.local/sops/time-off"
+  },
+  {
+    "id": "sop-6",
+    "title": "Reporting a security incident",
+    "category": "Operations",
+    "link": "https://example-drive.local/sops/security-incident"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "T-1001",
+    "department": "support",
+    "title": "Login fails after password reset",
+    "status": "Open",
+    "priority": "High",
+    "assignee": "Priya Nair",
+    "createdAt": "2026-09-01",
+    "description": "Customer reports being locked out after using the 'forgot password' flow. Reproduced on staging; investigating token expiry."
+  },
+  {
+    "id": "T-1002",
+    "department": "support",
+    "title": "Invoice PDF shows wrong tax rate",
+    "status": "In Progress",
+    "priority": "Medium",
+    "assignee": "Priya Nair",
+    "createdAt": "2026-09-03",
+    "description": "Tax rate for EU customers is using the old rate table. Fix scheduled for next release."
+  },
+  {
+    "id": "T-1003",
+    "department": "eng",
+    "title": "API returns 500 on bulk export",
+    "status": "Open",
+    "priority": "High",
+    "assignee": "Arjun Menon",
+    "createdAt": "2026-09-05",
+    "description": "Bulk export endpoint times out for datasets over 10k rows. Needs pagination."
+  },
+  {
+    "id": "T-1004",
+    "department": "eng",
+    "title": "Flaky integration test in CI",
+    "status": "Closed",
+    "priority": "Low",
+    "assignee": "Arjun Menon",
+    "createdAt": "2026-08-28",
+    "description": "Test was relying on wall-clock time; fixed with a mocked clock."
+  },
+  {
+    "id": "T-1005",
+    "department": "sales",
+    "title": "CRM sync missing new leads",
+    "status": "In Progress",
+    "priority": "Medium",
+    "assignee": "Fathima Rasheed",
+    "createdAt": "2026-09-04",
+    "description": "Leads created after 9/1 aren't syncing to monday.com. Suspect webhook rate limiting."
+  },
+  {
+    "id": "T-1006",
+    "department": "design",
+    "title": "Icon set inconsistent across pages",
+    "status": "Open",
+    "priority": "Low",
+    "assignee": "Rahul Varma",
+    "createdAt": "2026-09-06",
+    "description": "Mix of two icon libraries in the app; needs a single source of truth."
+  },
+  {
+    "id": "T-1007",
+    "department": "ops",
+    "title": "Renew office internet contract",
+    "status": "Open",
+    "priority": "Medium",
+    "assignee": "Sneha George",
+    "createdAt": "2026-09-02",
+    "description": "Current contract expires end of month; get quotes from two providers."
+  }
+]
